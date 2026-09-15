@@ -1,4 +1,35 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue';
+import fatherCatComponent from './components/fatherHamComponent.vue';
+import type { CartItem, Dish } from './constants/menu';
+
+// Variable reactiva para almacenar los platillos del pedido
+const cart = ref<CartItem[]>([]);
+
+// Contador dinámico reactivo: suma total de piezas pedidas
+const totalItemsCount = computed(() => {
+  return cart.value.reduce((acc, item) => acc + item.quantity, 0);
+});
+
+// Costo total de la orden
+const totalCartPrice = computed(() => {
+  return cart.value.reduce((acc, item) => acc + item.dish.price * item.quantity, 0);
+});
+
+// Lógica para agregar o incrementar el platillo
+function handleAddDishToCart(dish: Dish) {
+  const existingItem = cart.value.find((item) => item.dish.id === dish.id);
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.value.push({ dish, quantity: 1 });
+  }
+}
+
+// Vaciar o reiniciar el carrito
+function clearCart() {
+  cart.value = [];
+}
 </script>
 
 <template>
@@ -11,6 +42,10 @@
             <li><a href="#restaurantes">Restaurantes</a></li>
             <li><a href="#cupones">Cupones</a></li>
             <li>
+              <span class="badge">{{ totalItemsCount }}</span>
+              <span v-if="totalItemsCount > 0" class="cart-total-badge">
+              (${{ totalCartPrice.toFixed(2) }})
+              </span>
               <div class="carrito">
               <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="Interface / Shopping_Cart_02">
@@ -23,9 +58,26 @@
         </nav>
     </header>
 </div>
+<section id="inicio" class="inicio">
+  <h1>HOLAAAAA</h1>
+</section>
+<section id="menu" class="menu">
+  <div class="router-content">
+    <RouterLink to="/hamburguesas">Hamburguesas</RouterLink>
+    <RouterLink to="/postres">Postres</RouterLink>
+    <RouterLink to="snacks">Snacks</RouterLink>
+    <RouterView></RouterView>
+  </div>
+</section>
+
 </template>
 
 <style scoped>
+
+  h1 {
+      font-size: 300px;
+  }
+
   header{
     font-family: sans-serif;
     font-weight: bold;
@@ -46,6 +98,16 @@ header {
 main {
     padding-top: 80px;
 }
+
+.inicio{
+    padding-top: 100px;
+
+}
+
+.router-content {
+  padding-top: 300px;
+}
+
 nav{
     max-width: 100%;
     width: 100%;
@@ -110,6 +172,39 @@ nav a:hover {
 
 .carrito svg{
     stroke: #ffffff;
+}
+
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: #cbd5e0;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-link:hover,
+.nav-link.router-link-active {
+  color: #e67e22;
+  font-weight: 700;
+}
+
+
+.badge {
+  background: #e67e22;
+  color: white;
+  border-radius: 50%;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.cart-total-badge {
+  color: #48bb78;
+  font-size: 0.85rem;
 }
 
 </style>
