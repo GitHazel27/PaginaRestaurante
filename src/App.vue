@@ -1,7 +1,17 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
 import fatherCatComponent from './components/fatherHamComponent.vue';
 import type { CartItem, Dish } from './constants/menu';
+
+const route = useRoute();
+
+const routerViewColor = computed(() => {
+  if (route.path === '/hamburguesas') return 'router-view-content--burgers';
+  if (route.path === '/postres') return 'router-view-content--desserts';
+  if (route.path === '/snacks') return 'router-view-content--snacks';
+  return '';
+});
 
 // Variable reactiva para almacenar los platillos del pedido
 const cart = ref<CartItem[]>([]);
@@ -25,11 +35,6 @@ function handleAddDishToCart(dish: Dish) {
     cart.value.push({ dish, quantity: 1 });
   }
 }
-
-// Vaciar o reiniciar el carrito
-function clearCart() {
-  cart.value = [];
-}
 </script>
 
 <template>
@@ -38,7 +43,7 @@ function clearCart() {
         <nav>
            <ul>
             <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#menu">Menú</a></li>
+            <li><a href="#nuestro-menu">Menú</a></li>
             <li><a href="#restaurantes">Restaurantes</a></li>
             <li><a href="#cupones">Cupones</a></li>
             <li>
@@ -62,11 +67,21 @@ function clearCart() {
   <h1>HOLAAAAA</h1>
 </section>
 <section id="menu" class="menu">
+  <div id="nuestro-menu" class="nuestro-menu">
+      <h2>Nuestro menú</h2>
+  </div>
   <div class="router-content">
-    <RouterLink to="/hamburguesas">Hamburguesas</RouterLink>
-    <RouterLink to="/postres">Postres</RouterLink>
-    <RouterLink to="snacks">Snacks</RouterLink>
-    <RouterView></RouterView>
+    <div class="menu-panel">
+      <div class="menu-tabs" role="tablist" aria-label="Categorías del menú">
+        <RouterLink to="/hamburguesas" class="menu-tab menu-tab--burgers">Hamburguesas</RouterLink>
+        <RouterLink to="/snacks" class="menu-tab menu-tab--snacks">Snacks</RouterLink>
+        <RouterLink to="/postres" class="menu-tab menu-tab--desserts">Postres</RouterLink>
+        
+      </div>
+      <div class="router-view-content" :class="routerViewColor">
+        <RouterView></RouterView>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -104,9 +119,101 @@ main {
 
 }
 
-.router-content {
-  padding-top: 300px;
+.menu {
+  text-align: center;
+  padding-top: 100px;
+  padding-bottom: 200px;
 }
+
+.router-content {
+  padding: 0 24px;
+}
+
+.nuestro-menu{
+  scroll-margin-top: 100px;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  font-size: 50px;
+  background-color: #492301;
+  color:#ffffff;
+  height: 100px;
+}
+
+.menu-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 20px;
+  margin-top: 40px;
+}
+
+.menu-tab {
+  padding: 14px 22px;
+  color: #8e4505;
+  font-weight: bold;
+  font-family: sans-serif;
+  font-size: 20px;
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.menu-tab--burgers:hover,
+.menu-tab--burgers.router-link-active {
+  color: #8e4505;
+  background: #ff973051;
+  border-bottom-color: #ff973051;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.menu-tab--desserts:hover,
+.menu-tab--desserts.router-link-active {
+  color: #8e4505;
+  background: #e02a0154;
+  border-bottom-color: #e02a0154;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.menu-tab--snacks:hover,
+.menu-tab--snacks.router-link-active {
+  color: #8e4505;
+  background: #0082c361;
+  border-bottom-color: #0082c361;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  
+}
+
+.router-view-content {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  padding: 24px;
+}
+
+.router-view-content--burgers {
+  background: #ff973051;
+  border-radius: 16px;
+}
+
+.router-view-content--desserts {
+  background: #e02a0154;
+  border-radius: 16px;
+}
+
+.router-view-content--snacks {
+  background: #0082c361;
+  border-radius: 16px;
+}
+
 
 nav{
     max-width: 100%;
@@ -142,13 +249,8 @@ html {
     scroll-behavior: smooth;
 }
 
-.nav-link {
-    color: #000;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
 
-nav a:hover {
+header nav a:hover {
     color: #e02a01;
     background-color: #fbf5f5;
     border: 3px solid #ff9830;
@@ -158,6 +260,26 @@ nav a:hover {
     box-shadow:0 15px 25px rgba(15, 15, 15, 0.124);
     box-sizing: border-box;
     transition:transform 0..3s ease ;
+}
+
+@media (max-width: 700px) {
+  .menu-tabs {
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+
+  .menu-tab {
+    flex: 0 0 auto;
+    padding: 12px 16px;
+  }
+
+  .router-content {
+    padding: 0 16px;
+  }
+
+  .router-view-content {
+    padding: 16px;
+  }
 }
 
 .carrito {
@@ -172,25 +294,6 @@ nav a:hover {
 
 .carrito svg{
     stroke: #ffffff;
-}
-
-
-.nav-links {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.nav-link {
-  color: #cbd5e0;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-.nav-link:hover,
-.nav-link.router-link-active {
-  color: #e67e22;
-  font-weight: 700;
 }
 
 
