@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, provide } from 'vue';
 import { useRoute } from 'vue-router';
-import type { Burger, Snack } from './constants/menu';
+import type { Burger, Snack, Postre } from './constants/menu';
 
-type MenuItem = Burger | Snack;
+type MenuItem = Burger | Snack | Postre;
 
 const route = useRoute();
 

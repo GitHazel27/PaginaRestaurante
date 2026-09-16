@@ -14,6 +14,14 @@ export interface Snack {
   image?: string;
 }
 
+export interface Postre {
+  id: number;
+  name: string;
+  price: string;
+  calories: string;
+  image?: string;
+}
+
 export const menuHamburguesas: Burger[] = [{
   id: 1,
   name: 'King Pollo BBQ',
@@ -71,4 +79,33 @@ export const menuSnacks: Snack[]= [{
   price: '$139.00',
   calories: '700-1,876 Cal',
   image: 'https://cdn.sanity.io/images/czqk28jt/prod_bk_mx/6a4a3b204f81d05eb55b7beb2f7f4b5cd3ed8dea-1333x1333.png?w=750&q=40&fit=max&auto=format'
+}]
+
+export const menuPostres: Postre[]= [{
+  id: 201,
+  name: 'Cono Chocolate',
+  price: '$18.00',
+  calories: '75-213 Cal',
+  image: 'https://cdn.sanity.io/images/czqk28jt/prod_bk_mx/e545165ff8400fb64f7784ab9689b3b34eba013b-1333x1333.png?w=750&q=40&fit=max&auto=format'
+},
+{
+  id: 202,
+  name: 'Cono Vainilla',
+  price: '$18.00',
+  calories: '75-213 Cal',
+  image: 'https://cdn.sanity.io/images/czqk28jt/prod_bk_mx/30f59a18edde6c0256b9ccebb84b5ee5ddb6a32a-1333x1333.png?w=750&q=40&fit=max&auto=format'
+},
+{
+  id: 203,
+  name: 'Sundae Fresa',
+  price: '$32.00',
+  calories: '610 Cal',
+  image: 'https://cdn.sanity.io/images/czqk28jt/prod_bk_mx/d1ad808a49eba5443ae4b01aca88b4c91f272d57-1333x1333.png?w=750&q=40&fit=max&auto=format'
+},
+{
+  id: 204,
+  name: 'Sundae Chocolate',
+  price: '$32.00',
+  calories: '610 Cal',
+  image: 'https://cdn.sanity.io/images/czqk28jt/prod_bk_mx/5cf5fde5c845e74a61611d6026ef75941e01292b-1333x1333.png?w=750&q=40&fit=max&auto=format'
 }]
