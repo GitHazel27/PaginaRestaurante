@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, provide } from 'vue';
 import { useRoute } from 'vue-router';
-import type { Burger } from './constants/menu';
+import type { Burger, Snack } from './constants/menu';
+
+type MenuItem = Burger | Snack;
 
 const route = useRoute();
 
@@ -13,7 +15,7 @@ const routerViewColor = computed(() => {
 });
 
 // Variable reactiva para almacenar los platillos del pedido
-const cart = ref<{ dish: Burger; quantity: number }[]>([]);
+const cart = ref<{ dish: MenuItem; quantity: number }[]>([]);
 
 // Contador dinámico reactivo: suma total de piezas pedidas
 const totalItemsCount = computed(() => {
@@ -27,7 +29,7 @@ const totalCartPrice = computed(() => {
   }, 0);
 });
 
-function updateCart(dish: Burger, change: number) {
+function updateCart(dish: MenuItem, change: number) {
   const existingItem = cart.value.find((item) => item.dish.id === dish.id);
 
   if (!existingItem && change > 0) {
