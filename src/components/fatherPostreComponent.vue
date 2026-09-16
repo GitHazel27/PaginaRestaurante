@@ -3,7 +3,7 @@
 
 <template>
 <div>
-    Postresssss
+    Postres
 </div>
 </template>
 

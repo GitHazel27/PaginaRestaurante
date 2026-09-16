@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, provide } from 'vue';
 import { useRoute } from 'vue-router';
-import fatherCatComponent from './components/fatherHamComponent.vue';
-import type { CartItem, Dish } from './constants/menu';
+import type { Burger } from './constants/menu';
 
 const route = useRoute();
 
@@ -14,7 +13,7 @@ const routerViewColor = computed(() => {
 });
 
 // Variable reactiva para almacenar los platillos del pedido
-const cart = ref<CartItem[]>([]);
+const cart = ref<{ dish: Burger; quantity: number }[]>([]);
 
 // Contador dinámico reactivo: suma total de piezas pedidas
 const totalItemsCount = computed(() => {
@@ -23,18 +22,26 @@ const totalItemsCount = computed(() => {
 
 // Costo total de la orden
 const totalCartPrice = computed(() => {
-  return cart.value.reduce((acc, item) => acc + item.dish.price * item.quantity, 0);
+  return cart.value.reduce((acc, item) => {
+    return acc + Number.parseFloat(item.dish.price.replace('$', '')) * item.quantity;
+  }, 0);
 });
 
-// Lógica para agregar o incrementar el platillo
-function handleAddDishToCart(dish: Dish) {
+function updateCart(dish: Burger, change: number) {
   const existingItem = cart.value.find((item) => item.dish.id === dish.id);
-  if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    cart.value.push({ dish, quantity: 1 });
+
+  if (!existingItem && change > 0) {
+    cart.value.push({ dish, quantity: change });
+  } else if (existingItem) {
+    existingItem.quantity += change;
+    if (existingItem.quantity <= 0) {
+      cart.value = cart.value.filter((item) => item.dish.id !== dish.id);
+    }
   }
 }
+
+provide('updateCart', updateCart);
+provide('cart', cart);
 </script>
 
 <template>
@@ -64,7 +71,7 @@ function handleAddDishToCart(dish: Dish) {
     </header>
 </div>
 <section id="inicio" class="inicio">
-  <h1>HOLAAAAA</h1>
+  <h1>HOLAA</h1>
 </section>
 <section id="menu" class="menu">
   <div id="nuestro-menu" class="nuestro-menu">
@@ -122,7 +129,7 @@ main {
 .menu {
   text-align: center;
   padding-top: 100px;
-  padding-bottom: 200px;
+  padding-bottom: 15px;
 }
 
 .router-content {
