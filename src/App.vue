@@ -3,6 +3,7 @@ import { ref, computed, provide } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Burger, Snack, Postre } from './constants/menu';
 import cuponesComponent from './components/cuponesComponent.vue';
+import RestaurantesComponent from './components/restaurantesComponent.vue';
 
 type MenuItem = Burger | Snack | Postre;
 
@@ -15,15 +16,12 @@ const routerViewColor = computed(() => {
   return '';
 });
 
-// Variable reactiva para almacenar los platillos del pedido
 const cart = ref<{ dish: MenuItem; quantity: number }[]>([]);
 
-// Contador dinámico reactivo: suma total de piezas pedidas
 const totalItemsCount = computed(() => {
   return cart.value.reduce((acc, item) => acc + item.quantity, 0);
 });
 
-// Costo total de la orden
 const totalCartPrice = computed(() => {
   return cart.value.reduce((acc, item) => {
     return acc + Number.parseFloat(item.dish.price.replace('$', '')) * item.quantity;
@@ -54,8 +52,8 @@ provide('cart', cart);
            <ul>
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#nuestro-menu">Menú</a></li>
-            <li><a href="#restaurantes">Restaurantes</a></li>
             <li><a href="#cupones">Cupones</a></li>
+            <li><a href="#restaurantes">Restaurantes</a></li>
             <li>
               <span class="badge">{{ totalItemsCount }}</span>
               <span v-if="totalItemsCount > 0" class="cart-total-badge">
@@ -94,17 +92,22 @@ provide('cart', cart);
     </div>
   </div>
 </section>
-<section id="seccion-restaurantes"class="seccion-restaurantes">
-  <div id="restaurantes" class="restaurantes">
-    <h2>Restaurantes</h2>
-  </div>
-</section>
 <section id="seccion-cupones"class="seccion-cupones">
   <div id="cupones" class="cupones-title">
     <h2>Cupones</h2>
   </div>
   <h3>Consulta todos los cupones disponibles</h3>
   <cuponesComponent></cuponesComponent>
+</section>
+<section id="seccion-restaurantes"class="seccion-restaurantes">
+  <div id="restaurantes" class="restaurantes">
+    <h2>Restaurantes</h2>
+  </div>
+  <div class="restaurantes-heading">
+    <svg width="30px" height="30px" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true"><path stroke="#8e4505" stroke-width="12" d="M96 22a51.88 51.88 0 0 0-36.77 15.303A52.368 52.368 0 0 0 44 74.246c0 16.596 4.296 28.669 20.811 48.898a163.733 163.733 0 0 1 20.053 28.38C90.852 163.721 90.146 172 96 172c5.854 0 5.148-8.279 11.136-20.476a163.723 163.723 0 0 1 20.053-28.38C143.704 102.915 148 90.841 148 74.246a52.37 52.37 0 0 0-15.23-36.943A51.88 51.88 0 0 0 96 22Z"/><circle cx="96" cy="74" r="20" stroke="#8e4505" stroke-width="12"/></svg>
+    <h3>Encuentra tu restaurante más cercano</h3>
+  </div>
+  <RestaurantesComponent></RestaurantesComponent>
 </section>
 
 
@@ -203,6 +206,25 @@ main {
   background-color: #492301;
   color:#ffffff;
   height: 100px;
+}
+
+.seccion-restaurantes h3 {
+  margin: 0;
+  padding: 14px 22px;
+  color: #8e4505;
+  font-weight: bold;
+  font-family: sans-serif;
+  font-size: 20px;
+  text-decoration: none;
+  text-align: center;
+}
+
+.restaurantes-heading {
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
 }
 
 .seccion-cupones h3{
