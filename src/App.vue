@@ -2,6 +2,7 @@
 import { ref, computed, provide } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Burger, Snack, Postre } from './constants/menu';
+import cuponesComponent from './components/cuponesComponent.vue';
 
 type MenuItem = Burger | Snack | Postre;
 
@@ -93,6 +94,19 @@ provide('cart', cart);
     </div>
   </div>
 </section>
+<section id="seccion-restaurantes"class="seccion-restaurantes">
+  <div id="restaurantes" class="restaurantes">
+    <h2>Restaurantes</h2>
+  </div>
+</section>
+<section id="seccion-cupones"class="seccion-cupones">
+  <div id="cupones" class="cupones-title">
+    <h2>Cupones</h2>
+  </div>
+  <h3>Consulta todos los cupones disponibles</h3>
+  <cuponesComponent></cuponesComponent>
+</section>
+
 
 </template>
 
@@ -128,14 +142,52 @@ main {
 
 }
 
+.seccion-cupones{
+  padding-bottom: 50px;
+}
+
+.seccion-restaurantes{
+  padding-bottom: 50px;
+}
+
 .menu {
   text-align: center;
   padding-top: 100px;
-  padding-bottom: 15px;
+  padding-bottom: 50px;
 }
 
 .router-content {
   padding: 0 24px;
+}
+
+.restaurantes{
+      scroll-margin-top: 100px;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  font-size: 50px;
+  background-color: #492301;
+  color:#ffffff;
+  height: 100px;
+}
+
+.cupones-title{
+    scroll-margin-top: 100px;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  font-size: 50px;
+  background-color: #492301;
+  color:#ffffff;
+  height: 100px;
 }
 
 .nuestro-menu{
@@ -151,6 +203,16 @@ main {
   background-color: #492301;
   color:#ffffff;
   height: 100px;
+}
+
+.seccion-cupones h3{
+    padding: 14px 22px;
+  color: #8e4505;
+  font-weight: bold;
+  font-family: sans-serif;
+  font-size: 20px;
+  text-decoration: none;
+  text-align: center;
 }
 
 .menu-tabs {
