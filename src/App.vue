@@ -4,10 +4,19 @@ import { useRoute } from 'vue-router';
 import type { Burger, Snack, Postre } from './constants/menu';
 import cuponesComponent from './components/cuponesComponent.vue';
 import RestaurantesComponent from './components/restaurantesComponent.vue';
+import InicioComponent from './components/inicioComponent.vue';
 
 type MenuItem = Burger | Snack | Postre;
 
 const route = useRoute();
+const inicioSeleccionado = ref(false);
+
+function seleccionarInicio() {
+  inicioSeleccionado.value = false;
+  requestAnimationFrame(() => {
+    inicioSeleccionado.value = true;
+  });
+}
 
 const routerViewColor = computed(() => {
   if (route.path === '/hamburguesas') return 'router-view-content--burgers';
@@ -50,7 +59,7 @@ provide('cart', cart);
       <header>
         <nav>
            <ul>
-            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#inicio" @click="seleccionarInicio">Inicio</a></li>
             <li><a href="#nuestro-menu">Menú</a></li>
             <li><a href="#cupones">Cupones</a></li>
             <li><a href="#restaurantes">Restaurantes</a></li>
@@ -72,7 +81,7 @@ provide('cart', cart);
     </header>
 </div>
 <section id="inicio" class="inicio">
-  <h1>HOLAA</h1>
+  <InicioComponent :animate-button="inicioSeleccionado"></InicioComponent>
 </section>
 <section id="menu" class="menu">
   <div id="nuestro-menu" class="nuestro-menu">
@@ -115,6 +124,14 @@ provide('cart', cart);
 
 <style scoped>
 
+:global(html),
+:global(body),
+:global(#app) {
+  width: 100%;
+  min-width: 100%;
+  margin: 0;
+}
+
   h1 {
       font-size: 300px;
   }
@@ -141,8 +158,9 @@ main {
 }
 
 .inicio{
-    padding-top: 100px;
-
+  width: 100%;
+  padding-top: 100px;
+  overflow: hidden;
 }
 
 .seccion-cupones{
@@ -155,7 +173,7 @@ main {
 
 .menu {
   text-align: center;
-  padding-top: 100px;
+  padding-top: 0px;
   padding-bottom: 50px;
 }
 
